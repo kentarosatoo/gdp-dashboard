@@ -100,8 +100,9 @@ last_year_data = gdp_df[gdp_df['Year'] == to_year]
 for i, country in enumerate(selected_countries):
     col = cols[i % 4]
     with col:
-        first_val = first_year_data[first_year_data['Country Code'] == country]['GDP'].values
-        last_val = last_year_data[last_year_data['Country Code'] == country]['GDP'].values
+        # ↓↓↓ 【変更後】Country Name で行を探す
+        first_val = first_year_data[first_year_data['Country Name'] == country]['GDP'].values
+        last_val = last_year_data[last_year_data['Country Name'] == country]['GDP'].values
 
         # 単位を10億ドル（Billion USD）に換算
         gdp_start = first_val[0] / 1e9 if len(first_val) > 0 else float('nan')
