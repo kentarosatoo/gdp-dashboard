@@ -59,13 +59,13 @@ from_year, to_year = st.slider(
 )
 
 # 国コードの一覧取得
-countries = sorted(gdp_df['Country Code'].dropna().unique())
+countries = sorted(gdp_df['Country Name'].dropna().unique())
 
 # 国の複数選択ボックス
 selected_countries = st.multiselect(
     '表示する国を選択してください（複数選択可）',
     options=countries,
-    default=['USA', 'JPN', 'DEU', 'GBR', 'FRA']  # 初期表示する国
+    default=['United States', 'Japan', 'Germany', 'United Kingdom', 'France']
 )
 
 # もし国が1つも選ばれていない場合は警告を出して以降の描画を停止
@@ -73,20 +73,21 @@ if not selected_countries:
     st.info("国を1つ以上選択してください。")
     st.stop()
 
-# スライダーと国選択に基づいてデータを絞り込み
+# ↓↓↓ 【変更後】Country Name で一致判定する
 filtered_df = gdp_df[
-    (gdp_df['Country Code'].isin(selected_countries))
+    (gdp_df['Country Name'].isin(selected_countries))
     & (gdp_df['Year'] >= from_year)
     & (gdp_df['Year'] <= to_year)
 ]
 
 # 折れ線グラフの描画
 st.header('GDPの推移', divider='gray')
+# ↓↓↓ 【変更後】凡例を 正式国名 にする
 st.line_chart(
     filtered_df,
     x='Year',
     y='GDP',
-    color='Country Code'
+    color='Country Name'
 )
 
 # 選択した最終年の統計カード（メトリクス）表示
